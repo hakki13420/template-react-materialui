@@ -1,7 +1,7 @@
 import React from 'react'
 import ModalBox from './components/modal/ModalBox'
 import styled from "@emotion/styled"
-import { Box, Stack } from "@mui/material"
+import { Box, createTheme, Stack, ThemeProvider } from "@mui/material"
 import Feeds from "./components/feeds/Feeds"
 import NavBar from "./components/NavBar"
 import RightBar from "./components/rightbar/RightBar"
@@ -24,9 +24,18 @@ const App = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  
+  const [mode, setMode] = React.useState("light");
+
+  const darkTheme = createTheme({
+    palette: {
+      mode: mode,
+    },
+  });
 
   return (
-    <Box>   
+    <ThemeProvider theme={darkTheme}>
+    <Box bgcolor={"background.default"} color={"text.primary"}>   
       <NavBar />
       <Stack  direction="row" 
               justifyContent="space-between" 
@@ -36,10 +45,10 @@ const App = () => {
                   xs:"column",                  
                   sm:"row",
                 },                
-                marginTop:"5rem"                
+                paddingTop:"5rem"                
               }}
       >
-        <SideBar />
+        <SideBar mode={mode} setMode={setMode}/>
         <Feeds />
         <RightBar />
       </Stack>
@@ -58,6 +67,7 @@ const App = () => {
       <ModalBox open={open} handleClose={handleClose}/>        
 
     </Box>
+    </ThemeProvider>
   )
 }
 
